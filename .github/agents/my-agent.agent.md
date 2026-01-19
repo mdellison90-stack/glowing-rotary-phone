@@ -6,7 +6,7 @@ For format details, see: https://gh.io/customagents/config
 -->
 ---
 name: my-custom-agent
-description: A brief description of what this agent does
+description: A brief description of what this agent does.
 ---
 
 # My Agent
