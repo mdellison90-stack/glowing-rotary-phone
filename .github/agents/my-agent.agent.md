@@ -4,8 +4,8 @@
 # To make this agent available, merge this file into the default repository branch.
 # For format details, see: https://gh.io/customagents/config
 
-name:
-description:
+name: my-custom-agent
+description: A brief description of what this custom agent does.
 ---
 
 # My Agent
