@@ -25,7 +25,7 @@ function remove_label_text(label_id) {
 
 // Actions
 const generateKeys = async () => {
-    keyType = elements.selectKeyType.value
+    const keyType = elements.selectKeyType.value
     let { privateKey, publicKey } = await window.utils.generateKeys(keyType)
     elements.privateKeyTextArea.value = privateKey
     elements.publicKeyTextArea.value = publicKey
@@ -36,7 +36,7 @@ const generateKeys = async () => {
 }
 
 const generatePublicKey = async () => {
-    privateKey = elements.privateKeyTextArea.value
+    const privateKey = elements.privateKeyTextArea.value
     let publicKey = await window.utils.generatePublicKey(privateKey)
     elements.publicKeyTextArea.value = publicKey
 
@@ -65,11 +65,12 @@ const saveKey = async (input_key) => {
     let lower_input_key = input_key.toLowerCase();
     let textArea = lower_input_key === 'private' ? elements.privateKeyTextArea : elements.publicKeyTextArea
     let key = textArea.value;
-    result = await window.utils.saveKey(`${input_key}_key`, key);
+    let result = await window.utils.saveKey(`${input_key}_key`, key);
 
     let label_id = `${lower_input_key}-key-text-area-tooltip`
     let label = document.getElementById(label_id)
     // Display error tooltip for 5s
+    let tip_color
     if (result.startsWith('Error')) {
         tip_color = 'text-red-500';
     } else if (result) {
