@@ -60,23 +60,24 @@ const copyKey = async (input_key) => {
 const saveKey = async (input_key) => {
   const lower_input_key = input_key.toLowerCase()
   const key = document.getElementById(`${lower_input_key}-key-text-area`).value
-  let result = await window.utils.saveKey(`${input_key}_key`, key)
+  const result = await window.utils.saveKey(`${input_key}_key`, key)
 
   const label_id = `${lower_input_key}-key-text-area-tooltip`
-  let tip_color
+  let tip_color, display_result
   // Display error tooltip for 5s
   if (result && result.startsWith('Error')) {
     tip_color = 'text-red-500'
+    display_result = result
   } else if (result) {
     tip_color = 'text-green-500'
-    result = `${input_key} Key saved`
+    display_result = `${input_key} Key saved`
   } else {
-    result = ''
+    display_result = ''
   }
 
-  if (result) {
+  if (display_result) {
     document.getElementById(label_id).classList.add(tip_color)
-    document.getElementById(label_id).innerText = result
+    document.getElementById(label_id).innerText = display_result
     setTimeout(function () { remove_label_text(label_id) }, 5000)
   }
 }

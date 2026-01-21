@@ -92,8 +92,8 @@ function generateKeys (keyType) {
 
 function generatePublicKey (privateKey) {
   try {
-    const publickKeyObject = createPublicKey(privateKey)
-    return publickKeyObject.export({ format: 'pem', type: 'spki' })
+    const publicKeyObject = createPublicKey(privateKey)
+    return publicKeyObject.export({ format: 'pem', type: 'spki' })
   } catch (error) {
     return ''
   }
