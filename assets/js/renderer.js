@@ -53,16 +53,15 @@ const saveKey = async (inputKey) => {
 
   const labelId = `${lowerInputKey}-key-text-area-tooltip`
   // Display error tooltip for 5s
-  let tipColor
-  let result
+  let tipColor = ''
+  let result = ''
+
   if (saveResult.startsWith('Error')) {
     tipColor = 'text-red-500'
     result = saveResult
   } else if (saveResult) {
     tipColor = 'text-green-500'
     result = `${inputKey} Key saved`
-  } else {
-    result = ''
   }
 
   if (result) {
