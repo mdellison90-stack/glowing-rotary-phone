@@ -1,4 +1,6 @@
 // Utils
+const DEFAULT_KEY_TYPE = 'ed25519'
+
 function change_buttons_disabled_state(state) {
     document.getElementById('public-key-copy-button').disabled = state
     document.getElementById('public-key-save-button').disabled = state
@@ -83,8 +85,8 @@ const clearForm = () => {
     remove_label_text('private-key-text-area-tooltip')
     remove_label_text('public-key-text-area-tooltip')
     
-    // Reset dropdown to default (Ed25519)
-    document.getElementById('select-keyType').value = 'ed25519'
+    // Reset dropdown to default
+    document.getElementById('select-keyType').value = DEFAULT_KEY_TYPE
 }
 
 // Event listeners
