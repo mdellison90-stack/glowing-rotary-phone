@@ -49,14 +49,16 @@ const copyKey = async (inputKey) => {
 const saveKey = async (inputKey) => {
   const lowerInputKey = inputKey.toLowerCase()
   const key = document.getElementById(`${lowerInputKey}-key-text-area`).value
-  let result = await window.utils.saveKey(`${inputKey}_key`, key)
+  const saveResult = await window.utils.saveKey(`${inputKey}_key`, key)
 
   const labelId = `${lowerInputKey}-key-text-area-tooltip`
   // Display error tooltip for 5s
   let tipColor
-  if (result.startsWith('Error')) {
+  let result
+  if (saveResult.startsWith('Error')) {
     tipColor = 'text-red-500'
-  } else if (result) {
+    result = saveResult
+  } else if (saveResult) {
     tipColor = 'text-green-500'
     result = `${inputKey} Key saved`
   } else {
