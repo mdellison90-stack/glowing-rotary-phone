@@ -71,6 +71,22 @@ const saveKey = async (input_key) => {
     
 }
 
+const clearForm = () => {
+    // Clear text areas
+    document.getElementById('private-key-text-area').value = ''
+    document.getElementById('public-key-text-area').value = ''
+    
+    // Disable buttons
+    change_buttons_disabled_state(true)
+    
+    // Clear tooltips
+    remove_label_text('private-key-text-area-tooltip')
+    remove_label_text('public-key-text-area-tooltip')
+    
+    // Reset dropdown to default (Ed25519)
+    document.getElementById('select-keyType').value = 'ed25519'
+}
+
 // Event listeners
 const generateKeysButton = document.getElementById('generate-keys-button')
 generateKeysButton.addEventListener('click', function () {
@@ -100,4 +116,9 @@ privateKeySaveButton.addEventListener('click', function () {
 const publicKeySaveButton = document.getElementById('public-key-save-button')
 publicKeySaveButton.addEventListener('click', function () {
     saveKey("Public")
+})
+
+const newButton = document.getElementById('new-button')
+newButton.addEventListener('click', function () {
+    clearForm()
 })
