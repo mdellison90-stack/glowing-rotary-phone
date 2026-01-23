@@ -1,9 +1,21 @@
+// Cache DOM element references
+const elements = {
+    publicKeyCopyButton: document.getElementById('public-key-copy-button'),
+    publicKeySaveButton: document.getElementById('public-key-save-button'),
+    privateKeyCopyButton: document.getElementById('private-key-copy-button'),
+    privateKeySaveButton: document.getElementById('private-key-save-button'),
+    privateKeyTextArea: document.getElementById('private-key-text-area'),
+    publicKeyTextArea: document.getElementById('public-key-text-area'),
+    selectKeyType: document.getElementById('select-keyType'),
+    generateKeysButton: document.getElementById('generate-keys-button')
+}
+
 // Utils
 function change_buttons_disabled_state(state) {
-    document.getElementById('public-key-copy-button').disabled = state
-    document.getElementById('public-key-save-button').disabled = state
-    document.getElementById('private-key-copy-button').disabled = state
-    document.getElementById('private-key-save-button').disabled = state
+    elements.publicKeyCopyButton.disabled = state
+    elements.publicKeySaveButton.disabled = state
+    elements.privateKeyCopyButton.disabled = state
+    elements.privateKeySaveButton.disabled = state
 }
 
 function remove_label_text(label_id) {
@@ -13,10 +25,10 @@ function remove_label_text(label_id) {
 
 // Actions
 const generateKeys = async () => {
-    keyType = document.getElementById('select-keyType').value
+    const keyType = elements.selectKeyType.value
     let { privateKey, publicKey } = await window.utils.generateKeys(keyType)
-    document.getElementById('private-key-text-area').value = privateKey
-    document.getElementById('public-key-text-area').value = publicKey
+    elements.privateKeyTextArea.value = privateKey
+    elements.publicKeyTextArea.value = publicKey
 
     //Enable buttons
     change_buttons_disabled_state(false)
@@ -24,9 +36,9 @@ const generateKeys = async () => {
 }
 
 const generatePublicKey = async () => {
-    privateKey = document.getElementById('private-key-text-area').value
+    const privateKey = elements.privateKeyTextArea.value
     let publicKey = await window.utils.generatePublicKey(privateKey)
-    document.getElementById('public-key-text-area').value = publicKey
+    elements.publicKeyTextArea.value = publicKey
 
     if (publicKey) {
         change_buttons_disabled_state(false)
@@ -37,23 +49,28 @@ const generatePublicKey = async () => {
 
 const copyKey = async (input_key) => {
     let lower_input_key = input_key.toLowerCase()
-    let data = document.getElementById(`${lower_input_key}-key-text-area`).value
+    let textArea = lower_input_key === 'private' ? elements.privateKeyTextArea : elements.publicKeyTextArea
+    let data = textArea.value
     await window.utils.copyKey(data)
 
     // Display tooltip for 5s
     let label_id = `${lower_input_key}-key-text-area-tooltip`
-    document.getElementById(label_id).classList.add('text-green-500');
-    document.getElementById(label_id).innerText = `${input_key} Key copied`
+    let label = document.getElementById(label_id)
+    label.classList.add('text-green-500');
+    label.innerText = `${input_key} Key copied`
     setTimeout(function () { remove_label_text(label_id) }, 5000);
 }
 
 const saveKey = async (input_key) => {
     let lower_input_key = input_key.toLowerCase();
-    let key = document.getElementById(`${lower_input_key}-key-text-area`).value;
-    result = await window.utils.saveKey(`${input_key}_key`, key);
+    let textArea = lower_input_key === 'private' ? elements.privateKeyTextArea : elements.publicKeyTextArea
+    let key = textArea.value;
+    let result = await window.utils.saveKey(`${input_key}_key`, key);
 
     let label_id = `${lower_input_key}-key-text-area-tooltip`
+    let label = document.getElementById(label_id)
     // Display error tooltip for 5s
+    let tip_color
     if (result.startsWith('Error')) {
         tip_color = 'text-red-500';
     } else if (result) {
@@ -64,40 +81,38 @@ const saveKey = async (input_key) => {
     }
 
     if (result) {
-        document.getElementById(label_id).classList.add(tip_color);
-        document.getElementById(label_id).innerText = result;
+        label.classList.add(tip_color);
+        label.innerText = result;
         setTimeout(function () { remove_label_text(label_id) }, 5000);
     }
     
 }
 
 // Event listeners
-const generateKeysButton = document.getElementById('generate-keys-button')
-generateKeysButton.addEventListener('click', function () {
+elements.generateKeysButton.addEventListener('click', function () {
     generateKeys()
 })
 
-const privateKeyTextArea = document.getElementById('private-key-text-area')
-privateKeyTextArea.addEventListener('input', function () {
-    generatePublicKey()
+let debounceTimer
+elements.privateKeyTextArea.addEventListener('input', function () {
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => {
+        generatePublicKey()
+    }, 500)
 })
 
-const privateKeyCopyButton = document.getElementById('private-key-copy-button')
-privateKeyCopyButton.addEventListener('click', function () {
+elements.privateKeyCopyButton.addEventListener('click', function () {
     copyKey("Private")
 })
 
-const publicKeyCopyButton = document.getElementById('public-key-copy-button')
-publicKeyCopyButton.addEventListener('click', function () {
+elements.publicKeyCopyButton.addEventListener('click', function () {
     copyKey("Public")
 })
 
-const privateKeySaveButton = document.getElementById('private-key-save-button')
-privateKeySaveButton.addEventListener('click', function () {
+elements.privateKeySaveButton.addEventListener('click', function () {
     saveKey("Private")
 })
 
-const publicKeySaveButton = document.getElementById('public-key-save-button')
-publicKeySaveButton.addEventListener('click', function () {
+elements.publicKeySaveButton.addEventListener('click', function () {
     saveKey("Public")
 })
