@@ -15,7 +15,7 @@ A desktop application for generating and managing asymmetric cryptographic key p
 
 ### Prerequisites
 
-- Node.js 14.x or higher
+- Node.js 18.x or higher (recommended for security and performance)
 - npm 6.x or higher
 
 ### Setup
@@ -297,7 +297,7 @@ electron-builder -l
 
 ## Technology Stack
 
-- **Runtime**: Electron 21.3.0
+- **Runtime**: Electron 21.3.0 (Note: Consider upgrading to Electron 28.x+ for improved security)
 - **Language**: JavaScript (ES2021)
 - **Build Tool**: electron-builder
 - **Code Quality**: ESLint with Standard config
@@ -312,17 +312,17 @@ All keys are generated in **PEM format**:
 - **Private Keys**: PKCS#8 encoding
 - **Public Keys**: SubjectPublicKeyInfo (SPKI) encoding
 
-### Example Ed25519 Private Key
+### Example Ed25519 Private Key (truncated for brevity)
 ```
 -----BEGIN PRIVATE KEY-----
-MC4CAQAwBQYDK2VwBCIEIE...
+MC4CAQAwBQYDK2VwBCIEIE... (truncated)
 -----END PRIVATE KEY-----
 ```
 
-### Example Ed25519 Public Key
+### Example Ed25519 Public Key (truncated for brevity)
 ```
 -----BEGIN PUBLIC KEY-----
-MCowBQYDK2VwAyEA...
+MCowBQYDK2VwAyEA... (truncated)
 -----END PUBLIC KEY-----
 ```
 
