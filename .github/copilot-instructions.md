@@ -4,12 +4,12 @@ This repository contains an Asymmetric Key Generator built with Electron. It pro
 
 ## Technology Stack
 
-- **Runtime**: Electron v21.3.0
+- **Runtime**: Electron v35.7.5
 - **Language**: JavaScript (ES2021)
-- **Build Tool**: electron-builder
+- **Build Tool**: electron-builder v26.4.0
 - **Code Style**: ESLint with Standard config
 - **Key Dependencies**:
-  - electron-util for cross-platform utilities
+  - electron-util v0.17.2 for cross-platform utilities
   - Node.js built-in crypto module for key generation
 
 ## Project Structure
