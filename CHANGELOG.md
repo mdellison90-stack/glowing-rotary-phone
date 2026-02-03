@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.5.1
+- Add comprehensive API documentation to README.md
+- Document IPC channels and their usage
+- Document exposed renderer API
+- Add usage examples and security information
+
 ## v0.5.0
 - Default for `ed25519` keys
 - Change app name
