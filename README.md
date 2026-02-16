@@ -23,8 +23,8 @@ Before you begin, ensure you have the following installed:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/binance/asymmetric-key-generator.git
-cd asymmetric-key-generator
+git clone https://github.com/mdellison90-stack/glowing-rotary-phone.git
+cd glowing-rotary-phone
 ```
 
 2. Install dependencies:
@@ -122,4 +122,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Support
 
-For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/binance/asymmetric-key-generator).
+For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/mdellison90-stack/glowing-rotary-phone).
