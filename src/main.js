@@ -27,19 +27,16 @@ function createWindow () {
   const mainWindow = new BrowserWindow(options)
 
   // Events to Actions
-  ipcMain.handle(CHANNEL_GENERATE_KEYS, async (event, ...args) => {
-    const result = await generateKeys(...args)
-    return result
+  ipcMain.handle(CHANNEL_GENERATE_KEYS, (event, ...args) => {
+    return generateKeys(...args)
   })
 
-  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, async (event, ...args) => {
-    const result = await generatePublicKey(...args)
-    return result
+  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, (event, ...args) => {
+    return generatePublicKey(...args)
   })
 
-  ipcMain.handle(CHANNEL_COPY_KEY, async (event, ...args) => {
-    const result = await copyKey(...args)
-    return result
+  ipcMain.handle(CHANNEL_COPY_KEY, (event, ...args) => {
+    return copyKey(...args)
   })
 
   ipcMain.handle(CHANNEL_SAVE_KEY, async (event, ...args) => {
@@ -66,55 +63,43 @@ app.on('window-all-closed', function () {
 })
 
 // Actions
-async function generateKeys (keyType) {
+function generateKeys (keyType) {
+  const commonEncodings = {
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem'
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem'
+    }
+  }
+
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...commonEncodings
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...commonEncodings
     })
   } else {
-    return generateKeyPairSync('ed25519', {
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
-    })
+    return generateKeyPairSync('ed25519', commonEncodings)
   }
 }
 
-async function generatePublicKey (privateKey) {
+function generatePublicKey (privateKey) {
   try {
-    const publickKeyObject = createPublicKey(privateKey)
-    return publickKeyObject.export({ format: 'pem', type: 'spki' })
+    const publicKeyObject = createPublicKey(privateKey)
+    return publicKeyObject.export({ format: 'pem', type: 'spki' })
   } catch (error) {
     return ''
   }
 }
 
-async function copyKey (data) {
+function copyKey (data) {
   clipboard.writeText(data)
 }
 
