@@ -9,7 +9,8 @@
     "dist": "electron-builder -mwl --config config/electron-builder.js",
     "lint": "eslint ./src --ext .js",
     "lint:fix": "eslint ./src --ext .js --fix",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "run": "webpack"
   },
   "repository": "https://github.com/binance/asymmetric-key-generator",
   "author": {
@@ -26,7 +27,9 @@
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.5.1",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "webpack": "^5.105.2",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "electron-util": "^0.17.2"
