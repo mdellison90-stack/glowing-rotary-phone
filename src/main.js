@@ -107,9 +107,9 @@ async function generateKeys (keyType) {
 
 async function generatePublicKey (privateKey) {
   try {
-    const publickKeyObject = createPublicKey(privateKey)
-    return publickKeyObject.export({ format: 'pem', type: 'spki' })
-  } catch (error) {
+    const publicKeyObject = createPublicKey(privateKey)
+    return publicKeyObject.export({ format: 'pem', type: 'spki' })
+  } catch {
     return ''
   }
 }
