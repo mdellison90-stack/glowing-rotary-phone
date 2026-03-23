@@ -109,7 +109,7 @@ async function generatePublicKey (privateKey) {
   try {
     const publicKeyObject = createPublicKey(privateKey)
     return publicKeyObject.export({ format: 'pem', type: 'spki' })
-  } catch (error) {
+  } catch {
     return ''
   }
 }
