@@ -27,24 +27,18 @@ function createWindow () {
   const mainWindow = new BrowserWindow(options)
 
   // Events to Actions
-  ipcMain.handle(CHANNEL_GENERATE_KEYS, async (event, ...args) => {
-    const result = await generateKeys(...args)
-    return result
-  })
+  const handlers = {
+    [CHANNEL_GENERATE_KEYS]: generateKeys,
+    [CHANNEL_GENERATE_PUBLIC_KEYS]: generatePublicKey,
+    [CHANNEL_COPY_KEY]: copyKey,
+    [CHANNEL_SAVE_KEY]: saveKey
+  }
 
-  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, async (event, ...args) => {
-    const result = await generatePublicKey(...args)
-    return result
-  })
-
-  ipcMain.handle(CHANNEL_COPY_KEY, async (event, ...args) => {
-    const result = await copyKey(...args)
-    return result
-  })
-
-  ipcMain.handle(CHANNEL_SAVE_KEY, async (event, ...args) => {
-    const result = await saveKey(...args)
-    return result
+  Object.entries(handlers).forEach(([channel, handler]) => {
+    ipcMain.handle(channel, async (event, ...args) => {
+      const result = await handler(...args)
+      return result
+    })
   })
 
   mainWindow.loadFile('assets/html/index.html')
@@ -65,42 +59,33 @@ app.on('window-all-closed', function () {
   GET_ALL_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
 
+// Constants
+const KEY_ENCODINGS = {
+  publicKeyEncoding: {
+    type: 'spki',
+    format: 'pem'
+  },
+  privateKeyEncoding: {
+    type: 'pkcs8',
+    format: 'pem'
+  }
+}
+
 // Actions
 async function generateKeys (keyType) {
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   } else {
     return generateKeyPairSync('ed25519', {
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   }
 }
