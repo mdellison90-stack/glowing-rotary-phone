@@ -20,8 +20,8 @@ This repository contains an Asymmetric Key Generator built with Electron. It pro
   preload.js  - Preload script for renderer security
   shared.js   - Shared constants and utilities
 /assets       - HTML, CSS, and static resources
-/build        - Build configuration and icons
-/config       - Build and configuration files
+/build        - Application icons
+/config       - electron-builder configuration
 ```
 
 ## Development Commands
@@ -87,6 +87,14 @@ npm run postinstall
   3. Test copy and save operations
   4. Verify UI renders correctly
   5. Run `npm run lint` to ensure code style compliance
+
+## Change Workflow
+
+1. Inspect the existing main, preload, shared, and renderer code before changing an IPC or UI flow.
+2. Keep changes focused and preserve the existing Electron process boundaries.
+3. Run `npm run lint` after JavaScript changes.
+4. For user-facing changes, update `CHANGELOG.md` and verify the relevant behavior manually.
+5. Do not commit generated build output, dependency directories, or secrets.
 
 ## Security Considerations
 
