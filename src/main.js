@@ -8,7 +8,7 @@ const {
   CHANNEL_GENERATE_PUBLIC_KEYS,
   CHANNEL_COPY_KEY,
   CHANNEL_SAVE_KEY,
-  GET_ALL_CHANNELS
+  ALL_IPC_CHANNELS
 } = require('./shared')
 
 function createWindow () {
@@ -56,7 +56,7 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', function () {
   if (!is.macos) app.quit()
-  GET_ALL_CHANNELS.map(channel => ipcMain.removeHandler(channel))
+  ALL_IPC_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
 
 // Constants
@@ -92,8 +92,8 @@ async function generateKeys (keyType) {
 
 async function generatePublicKey (privateKey) {
   try {
-    const publickKeyObject = createPublicKey(privateKey)
-    return publickKeyObject.export({ format: 'pem', type: 'spki' })
+    const publicKeyObject = createPublicKey(privateKey)
+    return publicKeyObject.export({ format: 'pem', type: 'spki' })
   } catch (error) {
     return ''
   }

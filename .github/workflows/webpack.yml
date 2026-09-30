@@ -1,4 +1,4 @@
-name: NodeJS with Webpack
+name: Node.js CI
 
 on:
   push:
@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: [ "README.md" ]
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
+    - name: Lint
       run: |
         npm install
-        npx webpack
+        npm run lint
