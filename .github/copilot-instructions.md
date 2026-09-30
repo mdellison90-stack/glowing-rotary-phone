@@ -1,113 +1,27 @@
-# Repository Instructions
+# Copilot Instructions
 
-This repository contains an Asymmetric Key Generator built with Electron. It provides a desktop application for generating RSA key pairs and managing cryptographic keys.
+## Project overview
 
-## Technology Stack
+This is an Electron desktop application for generating RSA and Ed25519 key pairs and deriving public keys from private keys.
 
-- **Runtime**: Electron v35.7.5
-- **Language**: JavaScript (ES2021)
-- **Build Tool**: electron-builder v26.4.0
-- **Code Style**: ESLint with Standard config
-- **Key Dependencies**:
-  - electron-util v0.17.2 for cross-platform utilities
-  - Node.js built-in crypto module for key generation
+## Project structure
 
-## Project Structure
+- `src/main.js` contains the Electron main process, cryptographic operations, and file operations.
+- `src/preload.js` exposes the renderer API through `contextBridge`.
+- `src/shared.js` defines IPC channel names shared by the main and preload processes.
+- `assets/html`, `assets/js`, and `assets/css` contain the renderer UI.
+- `config/electron-builder.js` configures packaging.
 
-```
-/src          - Main application source code
-  main.js     - Electron main process
-  preload.js  - Preload script for renderer security
-  shared.js   - Shared constants and utilities
-/assets       - HTML, CSS, and static resources
-/build        - Application icons
-/config       - electron-builder configuration
-```
+## Development guidance
 
-## Development Commands
+- Preserve Electron process boundaries: keep privileged APIs in the main process and expose only the required operations through the preload script.
+- Define or update IPC channel names in `src/shared.js` and keep their use consistent between the main and preload scripts.
+- Validate inputs before cryptographic or file operations. Treat private keys as sensitive: never log or expose them, and preserve restrictive permissions when saving them.
+- Follow the existing JavaScript Standard Style and conventions. Avoid unrelated changes and new dependencies.
+- Update `CHANGELOG.md` for user-facing behavior changes.
 
-```bash
-# Run the application in development mode
-npm start
+## Validation
 
-# Lint JavaScript files
-npm run lint
-
-# Auto-fix linting issues
-npm run lint:fix
-
-# Package the app (without distribution)
-npm run pack
-
-# Build distributable packages for all platforms
-npm run dist
-
-# Install/rebuild native dependencies
-npm run postinstall
-```
-
-## Code Style and Conventions
-
-- Follow **JavaScript Standard Style** (enforced by ESLint)
-- Use **ES2021** features
-- Prefer **async/await** over callbacks
-- Use **const** and **let**, never **var**
-- Follow existing naming conventions:
-  - UPPER_CASE for constants (e.g., CHANNEL_GENERATE_KEYS)
-  - camelCase for functions and variables
-- IPC channels are defined in `shared.js` and should use the CHANNEL_ prefix
-
-## Architecture Guidelines
-
-- **Main Process**: Handle IPC communication, file system operations, and native APIs
-- **Renderer Process**: Handle UI and user interactions (loaded from assets/html)
-- **Preload Script**: Expose safe APIs to renderer process via contextBridge
-- Always validate user input before cryptographic operations
-- Use Electron's security best practices (no nodeIntegration in renderer)
-
-## File Modifications
-
-### Safe to Modify
-- Source files in `/src`
-- HTML/CSS in `/assets`
-- Configuration in `/config`
-- Documentation files (README, CHANGELOG)
-
-### Do Not Modify
-- `/build/icons` - Pre-generated application icons
-- `package-lock.json` - Only modify via npm commands
-- `.github/workflows` - CI/CD configuration (modify with caution)
-
-## Testing
-
-- This project currently does not have automated tests
-- Manual testing required for all changes:
-  1. Run `npm start` to test the application
-  2. Test key generation functionality
-  3. Test copy and save operations
-  4. Verify UI renders correctly
-  5. Run `npm run lint` to ensure code style compliance
-
-## Change Workflow
-
-1. Inspect the existing main, preload, shared, and renderer code before changing an IPC or UI flow.
-2. Keep changes focused and preserve the existing Electron process boundaries.
-3. Run `npm run lint` after JavaScript changes.
-4. For user-facing changes, update `CHANGELOG.md` and verify the relevant behavior manually.
-5. Do not commit generated build output, dependency directories, or secrets.
-
-## Security Considerations
-
-- This application handles cryptographic keys - treat all key material as sensitive
-- Never log or expose private keys
-- Always use secure IPC communication patterns
-- Validate all file paths before file operations
-- Follow Electron security checklist for any new features
-
-## Pull Request Guidelines
-
-- All code must pass `npm run lint`
-- Test the application manually with `npm start`
-- Update CHANGELOG.md for user-facing changes
-- Keep commits focused and atomic
-- Provide clear descriptions of changes
+- Run `npm run lint` after JavaScript changes.
+- There is no automated test script configured in `package.json`; manually verify changed behavior when practical.
+- `npm start` launches the app. `npm run pack` and `npm run dist` package it.
