@@ -62,34 +62,46 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', function () {
   if (!is.macos) app.quit()
-  GET_ALL_CHANNELS.forEach(channel => ipcMain.removeHandler(channel))
+  GET_ALL_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
 
 // Actions
 async function generateKeys (keyType) {
-  const rsaConfig = {
-    publicKeyEncoding: {
-      type: 'spki',
-      format: 'pem'
-    },
-    privateKeyEncoding: {
-      type: 'pkcs8',
-      format: 'pem'
-    }
-  }
-
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      ...rsaConfig
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      ...rsaConfig
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
     })
   } else {
-    return generateKeyPairSync('ed25519', rsaConfig)
+    return generateKeyPairSync('ed25519', {
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
+    })
   }
 }
 
