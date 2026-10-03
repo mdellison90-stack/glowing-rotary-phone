@@ -27,18 +27,24 @@ function createWindow () {
   const mainWindow = new BrowserWindow(options)
 
   // Events to Actions
-  const handlers = {
-    [CHANNEL_GENERATE_KEYS]: generateKeys,
-    [CHANNEL_GENERATE_PUBLIC_KEYS]: generatePublicKey,
-    [CHANNEL_COPY_KEY]: copyKey,
-    [CHANNEL_SAVE_KEY]: saveKey
-  }
+  ipcMain.handle(CHANNEL_GENERATE_KEYS, async (event, ...args) => {
+    const result = await generateKeys(...args)
+    return result
+  })
 
-  Object.entries(handlers).forEach(([channel, handler]) => {
-    ipcMain.handle(channel, async (event, ...args) => {
-      const result = await handler(...args)
-      return result
-    })
+  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, async (event, ...args) => {
+    const result = await generatePublicKey(...args)
+    return result
+  })
+
+  ipcMain.handle(CHANNEL_COPY_KEY, async (event, ...args) => {
+    const result = await copyKey(...args)
+    return result
+  })
+
+  ipcMain.handle(CHANNEL_SAVE_KEY, async (event, ...args) => {
+    const result = await saveKey(...args)
+    return result
   })
 
   mainWindow.loadFile('assets/html/index.html')
