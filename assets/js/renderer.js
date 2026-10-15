@@ -1,4 +1,12 @@
 // Utils
+function debounce (func, delay) {
+  let timeoutId
+  return function (...args) {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => func.apply(this, args), delay)
+  }
+}
+
 function setButtonsDisabledState (state) {
   document.getElementById('public-key-copy-button').disabled = state
   document.getElementById('public-key-save-button').disabled = state
@@ -35,6 +43,8 @@ const generatePublicKey = async () => {
   }
 }
 
+const debouncedGeneratePublicKey = debounce(generatePublicKey, 300)
+
 const copyKey = async (keyTypeLabel) => {
   const keyTypeId = keyTypeLabel.toLowerCase()
   const data = document.getElementById(`${keyTypeId}-key-text-area`).value
@@ -53,7 +63,7 @@ const saveKey = async (keyTypeLabel) => {
   let result = await window.utils.saveKey(`${keyTypeLabel}_key`, key)
 
   const tooltipElementId = `${keyTypeId}-key-text-area-tooltip`
-  
+
   // Determine tooltip color and message
   let tooltipColorClass
   if (result && result.startsWith('Error')) {
@@ -82,7 +92,7 @@ generateKeysButton.addEventListener('click', function () {
 
 const privateKeyTextArea = document.getElementById('private-key-text-area')
 privateKeyTextArea.addEventListener('input', function () {
-  generatePublicKey()
+  debouncedGeneratePublicKey()
 })
 
 const privateKeyCopyButton = document.getElementById('private-key-copy-button')
