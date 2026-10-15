@@ -7,7 +7,7 @@ const path = require('path')
 let is = { linux: process.platform === 'linux', macos: process.platform === 'darwin' }
 try {
   ({ is } = require('electron-util'))
-} catch (error) {
+} catch {
   // electron-util is only valid inside Electron runtime, so fall back to native platform checks.
 }
 const {
