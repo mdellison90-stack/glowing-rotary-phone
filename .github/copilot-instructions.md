@@ -9,7 +9,7 @@ This is an Electron desktop application for generating RSA and Ed25519 key pairs
 - `src/main.js` contains the Electron main process, cryptographic operations, and file operations.
 - `src/preload.js` exposes the renderer API through `contextBridge`.
 - `src/shared.js` defines IPC channel names used by the main process; `src/preload.js` invokes matching channel-name strings.
-- `assets/html`, `assets/js`, and `assets/css` contain the renderer UI.
+- `assets/html`, `assets/js`, and `assets/css` contain the renderer UI, including `assets/js/renderer.js`.
 - `config/electron-builder.js` configures packaging.
 
 ## Development guidance
@@ -25,3 +25,5 @@ This is an Electron desktop application for generating RSA and Ed25519 key pairs
 - Run `npm run lint` after JavaScript changes.
 - There is no automated test script configured in `package.json`; manually verify changed behavior when practical.
 - `npm start` launches the app. `npm run pack` and `npm run dist` package it.
+- For IPC changes, verify both the main-process handler and the matching preload invocation.
+- For renderer changes, verify the affected UI flow in the running Electron app when practical.
