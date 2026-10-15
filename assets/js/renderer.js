@@ -96,6 +96,8 @@ elements.generateKeysButton.addEventListener('click', function () {
 let debounceTimer
 elements.privateKeyTextArea.addEventListener('input', function () {
     clearTimeout(debounceTimer)
+    change_buttons_disabled_state(true)
+    elements.publicKeyTextArea.value = ''
     debounceTimer = setTimeout(() => {
         generatePublicKey()
     }, 500)
