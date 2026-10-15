@@ -7,16 +7,17 @@ function debounce (func, delay) {
   }
 }
 
-function change_buttons_disabled_state (state) {
+function setButtonsDisabledState (state) {
   document.getElementById('public-key-copy-button').disabled = state
   document.getElementById('public-key-save-button').disabled = state
   document.getElementById('private-key-copy-button').disabled = state
   document.getElementById('private-key-save-button').disabled = state
 }
 
-function remove_label_text (label_id) {
-  document.getElementById(label_id).innerText = 'ㅤ'
-  document.getElementById(label_id).classList = []
+function clearTooltipLabel (tooltipElementId) {
+  const tooltipElement = document.getElementById(tooltipElementId)
+  tooltipElement.innerText = 'ㅤ'
+  tooltipElement.className = ''
 }
 
 // Actions
@@ -27,7 +28,7 @@ const generateKeys = async () => {
   document.getElementById('public-key-text-area').value = publicKey
 
   // Enable buttons
-  change_buttons_disabled_state(false)
+  setButtonsDisabledState(false)
 }
 
 const generatePublicKey = async () => {
@@ -36,49 +37,50 @@ const generatePublicKey = async () => {
   document.getElementById('public-key-text-area').value = publicKey
 
   if (publicKey) {
-    change_buttons_disabled_state(false)
+    setButtonsDisabledState(false)
   } else {
-    change_buttons_disabled_state(true)
+    setButtonsDisabledState(true)
   }
 }
 
-// Debounced version to prevent excessive calls during typing
 const debouncedGeneratePublicKey = debounce(generatePublicKey, 300)
 
-const copyKey = async (input_key) => {
-  const lower_input_key = input_key.toLowerCase()
-  const data = document.getElementById(`${lower_input_key}-key-text-area`).value
+const copyKey = async (keyTypeLabel) => {
+  const keyTypeId = keyTypeLabel.toLowerCase()
+  const data = document.getElementById(`${keyTypeId}-key-text-area`).value
   await window.utils.copyKey(data)
 
   // Display tooltip for 5s
-  const label_id = `${lower_input_key}-key-text-area-tooltip`
-  document.getElementById(label_id).classList.add('text-green-500')
-  document.getElementById(label_id).innerText = `${input_key} Key copied`
-  setTimeout(function () { remove_label_text(label_id) }, 5000)
+  const tooltipElementId = `${keyTypeId}-key-text-area-tooltip`
+  document.getElementById(tooltipElementId).classList.add('text-green-500')
+  document.getElementById(tooltipElementId).innerText = `${keyTypeLabel} Key copied`
+  setTimeout(function () { clearTooltipLabel(tooltipElementId) }, 5000)
 }
 
-const saveKey = async (input_key) => {
-  const lower_input_key = input_key.toLowerCase()
-  const key = document.getElementById(`${lower_input_key}-key-text-area`).value
-  const result = await window.utils.saveKey(`${input_key}_key`, key)
+const saveKey = async (keyTypeLabel) => {
+  const keyTypeId = keyTypeLabel.toLowerCase()
+  const key = document.getElementById(`${keyTypeId}-key-text-area`).value
+  let result = await window.utils.saveKey(`${keyTypeLabel}_key`, key)
 
-  const label_id = `${lower_input_key}-key-text-area-tooltip`
-  let tip_color, display_result
-  // Display error tooltip for 5s
+  const tooltipElementId = `${keyTypeId}-key-text-area-tooltip`
+
+  // Determine tooltip color and message
+  let tooltipColorClass
   if (result && result.startsWith('Error')) {
-    tip_color = 'text-red-500'
-    display_result = result
+    tooltipColorClass = 'text-red-500'
+    // Keep error message as is
   } else if (result) {
-    tip_color = 'text-green-500'
-    display_result = `${input_key} Key saved`
+    tooltipColorClass = 'text-green-500'
+    result = `${keyTypeLabel} Key saved`
   } else {
-    display_result = ''
+    result = ''
   }
 
-  if (display_result) {
-    document.getElementById(label_id).classList.add(tip_color)
-    document.getElementById(label_id).innerText = display_result
-    setTimeout(function () { remove_label_text(label_id) }, 5000)
+  // Display tooltip for 5s if there's a message
+  if (result) {
+    document.getElementById(tooltipElementId).classList.add(tooltipColorClass)
+    document.getElementById(tooltipElementId).innerText = result
+    setTimeout(function () { clearTooltipLabel(tooltipElementId) }, 5000)
   }
 }
 

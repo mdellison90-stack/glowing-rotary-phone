@@ -1,6 +1,6 @@
 # Repository Instructions
 
-This repository contains an Asymmetric Key Generator built with Electron. It provides a desktop application for generating RSA key pairs and managing cryptographic keys.
+This repository contains an Electron desktop application for generating RSA and Ed25519 key pairs, deriving public keys from private keys, and managing cryptographic keys.
 
 ## Technology Stack
 
@@ -62,8 +62,11 @@ npm run postinstall
 - **Main Process**: Handle IPC communication, file system operations, and native APIs
 - **Renderer Process**: Handle UI and user interactions (loaded from assets/html)
 - **Preload Script**: Expose safe APIs to renderer process via contextBridge
+- Define or update IPC channel names in `src/shared.js` and keep the matching string literals in `src/preload.js` consistent.
 - Always validate user input before cryptographic operations
+- Treat private keys as sensitive: never log or expose them outside intended user-facing flows, and preserve restrictive permissions when saving them.
 - Use Electron's security best practices (no nodeIntegration in renderer)
+- Avoid unrelated changes and new dependencies.
 
 ## File Modifications
 
@@ -80,7 +83,7 @@ npm run postinstall
 
 ## Testing
 
-- This project currently does not have automated tests
+- There is no automated test script configured in `package.json`.
 - Manual testing required for all changes:
   1. Run `npm start` to test the application
   2. Test key generation functionality

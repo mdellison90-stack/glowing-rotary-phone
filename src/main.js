@@ -8,7 +8,7 @@ const {
   CHANNEL_GENERATE_PUBLIC_KEYS,
   CHANNEL_COPY_KEY,
   CHANNEL_SAVE_KEY,
-  GET_ALL_CHANNELS
+  ALL_IPC_CHANNELS
 } = require('./shared')
 
 function createWindow () {
@@ -59,34 +59,37 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', function () {
   if (!is.macos) app.quit()
-  GET_ALL_CHANNELS.map(channel => ipcMain.removeHandler(channel))
+  ALL_IPC_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
+
+// Constants
+const KEY_ENCODINGS = {
+  publicKeyEncoding: {
+    type: 'spki',
+    format: 'pem'
+  },
+  privateKeyEncoding: {
+    type: 'pkcs8',
+    format: 'pem'
+  }
+}
 
 // Actions
 function generateKeys (keyType) {
-  const commonEncodings = {
-    publicKeyEncoding: {
-      type: 'spki',
-      format: 'pem'
-    },
-    privateKeyEncoding: {
-      type: 'pkcs8',
-      format: 'pem'
-    }
-  }
-
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      ...commonEncodings
+      ...KEY_ENCODINGS
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      ...commonEncodings
+      ...KEY_ENCODINGS
     })
   } else {
-    return generateKeyPairSync('ed25519', commonEncodings)
+    return generateKeyPairSync('ed25519', {
+      ...KEY_ENCODINGS
+    })
   }
 }
 
