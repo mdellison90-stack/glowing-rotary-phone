@@ -7,8 +7,9 @@ function setButtonsDisabledState (state) {
 }
 
 function clearTooltipLabel (tooltipElementId) {
-  document.getElementById(tooltipElementId).innerText = 'ㅤ'
-  document.getElementById(tooltipElementId).classList = []
+  const tooltipElement = document.getElementById(tooltipElementId)
+  tooltipElement.innerText = 'ㅤ'
+  tooltipElement.className = ''
 }
 
 // Actions

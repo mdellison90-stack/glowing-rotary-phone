@@ -16,7 +16,7 @@ A desktop application for generating RSA and Ed25519 key pairs built with Electr
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
-- **Node.js** (version 14 or higher)
+- **Node.js** (version 22.12.0 or higher)
 - **npm** (comes with Node.js)
 
 ## Installation

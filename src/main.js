@@ -65,42 +65,33 @@ app.on('window-all-closed', function () {
   ALL_IPC_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
 
+// Constants
+const KEY_ENCODINGS = {
+  publicKeyEncoding: {
+    type: 'spki',
+    format: 'pem'
+  },
+  privateKeyEncoding: {
+    type: 'pkcs8',
+    format: 'pem'
+  }
+}
+
 // Actions
 async function generateKeys (keyType) {
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   } else {
     return generateKeyPairSync('ed25519', {
-      publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-      },
-      privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem'
-      }
+      ...KEY_ENCODINGS
     })
   }
 }
