@@ -11,7 +11,7 @@ A desktop application for generating RSA and Ed25519 key pairs built with Electr
 - **Save to File**: Export keys to secure files with proper permissions
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Secure**: Keys are generated using Node.js built-in crypto module
-- **PKCS#8 Format**: Industry-standard format for key encoding
+- **Standard Key Formats**: Private keys use PKCS#8 PEM and public keys use SPKI PEM
 
 ## Prerequisites
 
@@ -75,7 +75,7 @@ npm run pack
 4. **Save Keys**:
    - Click the "SAVE" button below either key to save it to a file
    - Choose a location and filename in the save dialog
-   - Private keys are saved with restrictive file permissions (0600)
+   - On Unix-like systems, saved files are created with restrictive permissions (0600)
 
 ## Development
 
@@ -104,7 +104,7 @@ npm run lint:fix
 
 ## Technology Stack
 
-- **Electron** v35.7.5 - Cross-platform desktop framework
+- **Electron** v44.5.1 - Cross-platform desktop framework
 - **Node.js Crypto** - Native cryptographic functions
 - **electron-util** - Cross-platform utilities
 - **electron-builder** - Package and build for distribution
@@ -113,7 +113,7 @@ npm run lint:fix
 
 - Private keys are generated using cryptographically secure random number generators
 - Keys never leave your machine unless you explicitly save or copy them
-- Saved private keys have restrictive file permissions (0600 on Unix-like systems)
+- On Unix-like systems, saved private keys have restrictive file permissions (0600)
 - No telemetry or data collection
 
 ## License
