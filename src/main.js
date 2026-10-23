@@ -8,7 +8,7 @@ const {
   CHANNEL_GENERATE_PUBLIC_KEYS,
   CHANNEL_COPY_KEY,
   CHANNEL_SAVE_KEY,
-  ALL_IPC_CHANNELS
+  GET_ALL_CHANNELS
 } = require('./shared')
 
 function createWindow () {
@@ -62,36 +62,45 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', function () {
   if (!is.macos) app.quit()
-  ALL_IPC_CHANNELS.map(channel => ipcMain.removeHandler(channel))
+  GET_ALL_CHANNELS.map(channel => ipcMain.removeHandler(channel))
 })
-
-// Constants
-const KEY_ENCODINGS = {
-  publicKeyEncoding: {
-    type: 'spki',
-    format: 'pem'
-  },
-  privateKeyEncoding: {
-    type: 'pkcs8',
-    format: 'pem'
-  }
-}
 
 // Actions
 async function generateKeys (keyType) {
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
-      ...KEY_ENCODINGS
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
     })
   } else if (keyType === 'rsa-4096') {
     return generateKeyPairSync('rsa', {
       modulusLength: 4096,
-      ...KEY_ENCODINGS
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
     })
   } else {
     return generateKeyPairSync('ed25519', {
-      ...KEY_ENCODINGS
+      publicKeyEncoding: {
+        type: 'spki',
+        format: 'pem'
+      },
+      privateKeyEncoding: {
+        type: 'pkcs8',
+        format: 'pem'
+      }
     })
   }
 }
@@ -100,7 +109,7 @@ async function generatePublicKey (privateKey) {
   try {
     const publicKeyObject = createPublicKey(privateKey)
     return publicKeyObject.export({ format: 'pem', type: 'spki' })
-  } catch (error) {
+  } catch {
     return ''
   }
 }

@@ -53,7 +53,7 @@ const saveKey = async (keyTypeLabel) => {
   let result = await window.utils.saveKey(`${keyTypeLabel}_key`, key)
 
   const tooltipElementId = `${keyTypeId}-key-text-area-tooltip`
-  
+
   // Determine tooltip color and message
   let tooltipColorClass
   if (result && result.startsWith('Error')) {
