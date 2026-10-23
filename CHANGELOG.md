@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## Unreleased
+- Update Electron and transitive dependencies to resolve security advisories
+
 ## v0.5.1
 - Add comprehensive API documentation to README.md
 - Document IPC channels and their usage

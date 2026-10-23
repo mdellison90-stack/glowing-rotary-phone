@@ -8,15 +8,15 @@ A desktop application for generating and managing asymmetric cryptographic key p
 - **Key Pair Generation**: Generate complete public/private key pairs with one click
 - **Public Key Derivation**: Automatically derive public keys from pasted private keys
 - **Key Management**: Copy keys to clipboard or save them to files
-- **Secure Storage**: Keys are saved with restricted file permissions (mode 0o600)
+- **Secure Storage**: New files on Unix-like systems are created with restrictive permissions (0600)
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js 18.x or higher (recommended for security and performance)
-- npm 6.x or higher
+- Node.js 22.12.0 or higher
+- npm (included with Node.js)
 
 ### Setup
 
@@ -61,7 +61,7 @@ Click the **COPY** button below either the private or public key to copy it to y
 
 Click the **SAVE** button below either the private or public key to save it to a file. A save dialog will appear allowing you to choose the file location and name.
 
-**Security Note**: Private keys are saved with restricted permissions (owner read/write only) for enhanced security.
+**Security Note**: New files on Unix-like systems are created with restrictive permissions (0600).
 
 ## API Documentation
 
@@ -197,7 +197,7 @@ Main process function that saves a key to a file.
 
 **Implementation:**
 - Opens a native save dialog using `electron.dialog.showSaveDialog()`
-- Saves file with mode `0o600` (owner read/write only) for security
+- Requests mode `0o600` for files on Unix-like systems
 - Returns success or error message
 
 ### Exposed Renderer API
@@ -221,7 +221,7 @@ This application follows Electron security best practices:
 - **Node Integration**: Disabled in renderer process
 - **Preload Script**: Uses `contextBridge` to expose only necessary APIs to the renderer
 - **Content Security Policy**: Strict CSP prevents XSS attacks
-- **File Permissions**: Private keys are saved with restricted permissions (0o600)
+- **File Permissions**: New files on Unix-like systems are created with restrictive permissions (0600)
 - **No Key Logging**: Private keys are never logged or exposed unnecessarily
 
 ## Development
@@ -297,7 +297,7 @@ electron-builder -l
 
 ## Technology Stack
 
-- **Runtime**: Electron 21.3.0 (Note: Consider upgrading to Electron 28.x+ for improved security)
+- **Runtime**: Electron 44.5.1
 - **Language**: JavaScript (ES2021)
 - **Build Tool**: electron-builder
 - **Code Quality**: ESLint with Standard config
