@@ -27,19 +27,16 @@ function createWindow () {
   const mainWindow = new BrowserWindow(options)
 
   // Events to Actions
-  ipcMain.handle(CHANNEL_GENERATE_KEYS, async (event, ...args) => {
-    const result = await generateKeys(...args)
-    return result
+  ipcMain.handle(CHANNEL_GENERATE_KEYS, (event, ...args) => {
+    return generateKeys(...args)
   })
 
-  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, async (event, ...args) => {
-    const result = await generatePublicKey(...args)
-    return result
+  ipcMain.handle(CHANNEL_GENERATE_PUBLIC_KEYS, (event, ...args) => {
+    return generatePublicKey(...args)
   })
 
-  ipcMain.handle(CHANNEL_COPY_KEY, async (event, ...args) => {
-    const result = await copyKey(...args)
-    return result
+  ipcMain.handle(CHANNEL_COPY_KEY, (event, ...args) => {
+    return copyKey(...args)
   })
 
   ipcMain.handle(CHANNEL_SAVE_KEY, async (event, ...args) => {
@@ -78,7 +75,7 @@ const KEY_ENCODINGS = {
 }
 
 // Actions
-async function generateKeys (keyType) {
+function generateKeys (keyType) {
   if (keyType === 'rsa-2048') {
     return generateKeyPairSync('rsa', {
       modulusLength: 2048,
@@ -96,7 +93,7 @@ async function generateKeys (keyType) {
   }
 }
 
-async function generatePublicKey (privateKey) {
+function generatePublicKey (privateKey) {
   try {
     const publicKeyObject = createPublicKey(privateKey)
     return publicKeyObject.export({ format: 'pem', type: 'spki' })
@@ -105,7 +102,7 @@ async function generatePublicKey (privateKey) {
   }
 }
 
-async function copyKey (data) {
+function copyKey (data) {
   clipboard.writeText(data)
 }
 
