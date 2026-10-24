@@ -56,7 +56,7 @@ const saveKey = async (inputKey) => {
   let tipColor = ''
   let result = ''
 
-  if (saveResult.startsWith('Error')) {
+  if (saveResult && saveResult.startsWith('Error')) {
     tipColor = 'text-red-500'
     result = saveResult
   } else if (saveResult) {
