@@ -8,7 +8,7 @@ const {
   CHANNEL_GENERATE_PUBLIC_KEYS,
   CHANNEL_COPY_KEY,
   CHANNEL_SAVE_KEY,
-  GET_ALL_CHANNELS
+  ALL_IPC_CHANNELS: GET_ALL_CHANNELS
 } = require('./shared')
 
 function createWindow () {
