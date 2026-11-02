@@ -286,13 +286,13 @@ This will create distributable packages for Windows, macOS, and Linux in the `di
 
 ```bash
 # macOS only
-electron-builder -m
+npx electron-builder -m --config config/electron-builder.js
 
 # Windows only
-electron-builder -w
+npx electron-builder -w --config config/electron-builder.js
 
 # Linux only
-electron-builder -l
+npx electron-builder -l --config config/electron-builder.js
 ```
 
 ## Technology Stack
