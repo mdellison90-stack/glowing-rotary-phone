@@ -1,4 +1,4 @@
-name: Node.js CI
+name: NodeJS CI
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
